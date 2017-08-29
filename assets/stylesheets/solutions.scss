@@ -1,0 +1,73 @@
+.solved-panel, .post-controls .accepted, .fa.accepted, .accepted-text {
+  color: green;
+}
+
+.post-controls .accepted-text {
+  display: inline-block;
+  font-size: inherit;
+  vertical-align: middle;
+  line-height: 35px;
+  margin-right: -5px;
+  z-index: 999;
+}
+
+// you can style accepted answers however your want
+.topic-post.accepted-answer .topic-body {
+//  background-color: #E9FFE0;
+}
+
+.mobile-view .post-controls .accepted-text {
+  float: left;
+}
+
+.mobile-view .solved-panel {
+  margin-bottom: 15px;
+}
+
+.solved-panel {
+
+  .by {
+    display: none;
+  }
+
+  margin-top: 20px;
+  margin-bottom: 0px;
+  font-size: 13px;
+  // margin-bottom: 0px;
+  // padding: 4px 0px;
+  //border-top: 1px solid #ddd;
+  //background-color: #E9FFE0;
+}
+
+aside.quote .title.title-only {
+  padding: 12px;
+}
+
+.solved-posts {
+  .read-state, .post-menu-area {
+    display: none !important;
+  }
+}
+
+.solved-topic-title {
+  margin-bottom: 15px;
+  span {
+    color: #aaa;
+  }
+}
+
+@media (min-width: 481px) {
+  .solved-topic-title {
+    font-size: 125%;
+  }
+}
+
+@media (max-width: 480px) {
+  .solved-posts {
+    margin: 25px 15px 0;
+  }
+}
+
+.accepted-text.queued {
+  color: #c8c8c8;
+}

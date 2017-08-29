@@ -1,0 +1,18 @@
+plugins:
+  solved_enabled:
+    default: true
+    client: true
+  allow_solved_on_all_topics:
+    default: false
+    client: true
+  accept_all_solutions_trust_level:
+    default: 4
+    client: true
+  empty_box_on_unsolved:
+    default: false
+    client: true
+  solved_quote_length:
+    default: 300
+    client: false
+  solved_topics_auto_close_hours:
+    default: 0

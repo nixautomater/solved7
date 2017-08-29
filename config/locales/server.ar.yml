@@ -1,0 +1,9 @@
+ar:
+  site_settings:
+    allow_solved_on_all_topics: "اسمح للمستخدمين باختيار الحلول في كل المواضيع (إذ أنك تتحكم في هذا افتراضيا بتحرير الفئات)"
+    accept_all_solutions_trust_level: "أدنى حد مطلوب للثقة وذلك لقبول الحلول في أي موضوع (حتى لو لم يكن OP)"
+  reports:
+    accepted_solutions:
+      title: "الحلول المقبولة"
+      xaxis: "اليوم"
+      yaxis: "المجموع"

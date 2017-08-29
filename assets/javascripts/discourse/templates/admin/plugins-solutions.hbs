@@ -1,0 +1,33 @@
+<div class="solved-posts">
+  {{#if model.length}}
+    {{#each sortedPosts as |post|}}
+      {{#if post.can_accept_answer}}
+        <div class="clearfix regular topic-post">
+          <article data-post-id="{{post.id}}" data-user-id="{{post.user_id}}" class="boxed onscreen-post">
+            <a href="" class="tabLoc"></a>
+            <div class="row">
+              {{mount-widget widget="post-avatar" args=post}}
+              <div class="topic-body clearfix">
+                {{mount-widget widget="post-meta-data" args=post}}
+                <div class="regular contents">
+                  <div class="solved-topic-title">
+                    <span>Topic: </span>
+                    <a href="/t/{{post.topic_slug}}/{{post.topic_id}}/{{post.post_number}}" target="_blank" class="post-link">{{post.topic_title}}</a>
+                  </div>
+                  <div class="cooked">{{{post.cooked}}}</div>
+                </div>
+                <div class="queue-actions">
+                  {{d-button action="accept" actionParam=post icon="check" class="btn-info" label="solved.accept" disabled=performingAction}}
+                  {{d-button action="reject" actionParam=post icon="times" class="btn-primary" label="solved.reject" disabled=performingAction}}
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      {{/if}}
+    {{/each}}
+  {{/if}}
+  <div style="margin-top: 20px">
+    {{d-button action="refresh" icon="refresh" label="solved.refresh" disabled=performingAction}}
+  </div>
+</div>
