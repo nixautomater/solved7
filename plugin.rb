@@ -420,11 +420,12 @@ SQL
   module ::MmnCustomHelper
     def self.included(base)
       base.class_eval {
-        attributes :has_accepted_answer, :can_have_answer
+        #attributes :has_accepted_answer, :can_have_answer
+        attributes :can_have_answer
 
-        def has_accepted_answer
-          object.custom_fields["accepted_answer_post_ids"] ? true : false
-        end
+        # def has_accepted_answer
+        #   object.custom_fields["accepted_answer_post_ids"] ? true : false
+        # end
 
         def can_have_answer
           return true if SiteSetting.allow_solved_on_all_topics
@@ -438,35 +439,35 @@ SQL
       }
     end
 
-    def self.topic_custom_query(is_not = "")
-      "topics.id #{is_not} IN (SELECT tc.topic_id FROM topic_custom_fields tc WHERE tc.name = 'accepted_answer_post_ids' AND tc.value IS NOT NULL)"
-    end
+    # def self.topic_custom_query(is_not = "")
+    #   "topics.id #{is_not} IN (SELECT tc.topic_id FROM topic_custom_fields tc WHERE tc.name = 'accepted_answer_post_ids' AND tc.value IS NOT NULL)"
+    # end
   end
 
-  require_dependency 'search'
+  # require_dependency 'search'
 
-  if Search.respond_to? :advanced_filter
-    Search.advanced_filter(/in:solved/) do |posts|
-      posts.where(::MmnCustomHelper.topic_custom_query)
-    end
+  # if Search.respond_to? :advanced_filter
+  #   Search.advanced_filter(/in:solved/) do |posts|
+  #     posts.where(::MmnCustomHelper.topic_custom_query)
+  #   end
 
-    Search.advanced_filter(/in:unsolved/) do |posts|
-      posts.where(::MmnCustomHelper.topic_custom_query("NOT"))
-    end
-  end
+  #   Search.advanced_filter(/in:unsolved/) do |posts|
+  #     posts.where(::MmnCustomHelper.topic_custom_query("NOT"))
+  #   end
+  # end
 
-  if Discourse.has_needed_version?(Discourse::VERSION::STRING, '1.8.0.beta6')
-    require_dependency 'topic_query'
+  # if Discourse.has_needed_version?(Discourse::VERSION::STRING, '1.8.0.beta6')
+  #   require_dependency 'topic_query'
 
-    TopicQuery.add_custom_filter(:solved) do |results, topic_query|
-      if topic_query.options[:solved] == 'yes'
-        results = results.where(::MmnCustomHelper.topic_custom_query)
-      elsif topic_query.options[:solved] == 'no'
-        results = results.where(::MmnCustomHelper.topic_custom_query("NOT"))
-      end
-      results
-    end
-  end
+  #   TopicQuery.add_custom_filter(:solved) do |results, topic_query|
+  #     if topic_query.options[:solved] == 'yes'
+  #       results = results.where(::MmnCustomHelper.topic_custom_query)
+  #     elsif topic_query.options[:solved] == 'no'
+  #       results = results.where(::MmnCustomHelper.topic_custom_query("NOT"))
+  #     end
+  #     results
+  #   end
+  # end
 
   require_dependency 'topic_list_item_serializer'
   require_dependency 'listable_topic_serializer'
