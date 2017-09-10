@@ -1,6 +1,6 @@
 # name: discourse-solved
 # about: Custom discourse solved plugin based on https://github.com/discourse/discourse-solved
-# version: 0.1
+# version: 0.2
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: http://git.dev.abylina.com/momon/discourse-solved
 
@@ -83,6 +83,11 @@ SQL
       post.custom_fields["is_accepted_answer"]        = "true"
       post.custom_fields["is_queued_answer"]          = "accepted"
       topic.custom_fields["accepted_answer_post_ids"] = accepted_ids.uniq.join(",")
+
+      # if topic.custom_fields["solved_state"] != "unsolved"
+      #   topic.custom_fields["solved_state"] = "solved"
+      # end
+
       topic.save!
       post.save!
 
@@ -130,17 +135,20 @@ SQL
 
       post = Post.find(params[:id].to_i)
 
+      topic = post.topic
+
       guardian.ensure_can_accept_answer!(post.topic)
 
       post.custom_fields["is_accepted_answer"] = nil
       post.custom_fields["is_queued_answer"] = nil
 
-      accepted_ids = post.topic.custom_fields["accepted_answer_post_ids"].split(",").map(&:to_i)
+      accepted_ids = topic.custom_fields["accepted_answer_post_ids"].split(",").map(&:to_i)
       accepted_ids.delete(post.id)
       accepted_ids = accepted_ids.length > 0 ? accepted_ids.uniq.join(",") : nil
 
-      post.topic.custom_fields["accepted_answer_post_ids"] = accepted_ids
-      post.topic.save!
+      topic.custom_fields["accepted_answer_post_ids"] = accepted_ids
+
+      topic.save!
       post.save!
 
       # TODO remove_action! does not allow for this type of interface
