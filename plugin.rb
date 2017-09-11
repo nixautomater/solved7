@@ -148,6 +148,10 @@ SQL
 
       topic.custom_fields["accepted_answer_post_ids"] = accepted_ids
 
+      if accepted_ids.nil? && topic.custom_fields["mmn_queue_state"] != "solved"
+        topic.custom_fields["mmn_queue_state"] = "solved"
+      end
+
       topic.save!
       post.save!
 
