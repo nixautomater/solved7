@@ -84,9 +84,9 @@ SQL
       post.custom_fields["is_queued_answer"]          = "accepted"
       topic.custom_fields["accepted_answer_post_ids"] = accepted_ids.uniq.join(",")
 
-      # if topic.custom_fields["solved_state"] != "unsolved"
-      #   topic.custom_fields["solved_state"] = "solved"
-      # end
+      if !topic.custom_fields["mmn_queue_state"].blank?
+        topic.custom_fields["mmn_queue_state"] = nil
+      end
 
       topic.save!
       post.save!
