@@ -88,6 +88,10 @@ SQL
         topic.custom_fields["mmn_queue_state"] = nil
       end
 
+      if topic.custom_fields["mmn_button_active"].blank?
+        topic.custom_fields["solved_state"] = nil
+      end
+
       topic.save!
       post.save!
 
@@ -150,6 +154,10 @@ SQL
 
       if accepted_ids.nil? && topic.custom_fields["solved_state"] == "solved"
         topic.custom_fields["mmn_queue_state"] = "solved"
+      end
+
+      if accepted_ids.blank? && topic.custom_fields["mmn_button_active"].blank?
+        topic.custom_fields["solved_state"] = nil
       end
 
       topic.save!
