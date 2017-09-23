@@ -1,6 +1,6 @@
 # name: discourse-solved
 # about: Custom discourse solved plugin based on https://github.com/discourse/discourse-solved
-# version: 0.2
+# version: 0.3
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: http://git.dev.abylina.com/momon/discourse-solved
 
@@ -225,6 +225,11 @@ SQL
       render json: success_json
     end
 
+    def is_show_link
+      can_see = current_user && current_user.groups.pluck(:name).include?(SiteSetting.solved_group_can_see_queue_page)
+      render json: {show_link: can_see}
+    end
+
     def limit_accepts
       unless current_user.staff?
         RateLimiter.new(nil, "accept-hr-#{current_user.id}", 20, 1.hour).performed!
@@ -240,6 +245,7 @@ SQL
     post "/queue"     => "answer#queue"
     post "/unqueue"   => "answer#unqueue"
     post "/reject"    => "answer#reject"
+    get "/is_show_link" => "answer#is_show_link"
   end
 
   Discourse::Application.routes.append do

@@ -16,3 +16,5 @@ plugins:
     client: false
   solved_topics_auto_close_hours:
     default: 0
+  solved_group_can_see_queue_page:
+    default: ""

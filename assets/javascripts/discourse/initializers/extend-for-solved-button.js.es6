@@ -98,15 +98,19 @@ function initializeWithApi(api) {
     api.addDiscoveryQueryParam('solved', {replace: true, refreshModel: true});
   }
 
-  if (currentUser && currentUser.get('staff')) {
-    api.decorateWidget('hamburger-menu:admin-links', dec => {
-      return dec.attach('link', {
-        route: 'adminPlugins.solutions',
-        label: 'solved.menu'
-      });
+  if (currentUser) {
+    ajax("/solution/is_show_link").then(result => {
+
+      if (result.show_link) {
+        api.decorateWidget('hamburger-menu:generalLinks', () => {
+          return {
+            route: 'adminPlugins.solutions',
+            label: 'solved.menu'
+          };
+        });
+      }
     });
   }
-
 
   api.addPostMenuButton('solved', attrs => {
     const canQueue    = attrs.can_queue_answer;
@@ -374,5 +378,3 @@ export default {
     withPluginApi('0.1', initializeWithApi);
   }
 };
-
-// #f9f9f9
