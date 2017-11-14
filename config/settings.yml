@@ -18,3 +18,6 @@ plugins:
     default: 0
   solved_group_can_see_queue_page:
     default: ""
+  solved_groups_can_queue:
+    type: "list"
+    default: ""

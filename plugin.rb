@@ -1,6 +1,6 @@
 # name: discourse-solved
 # about: Custom discourse solved plugin based on https://github.com/discourse/discourse-solved
-# version: 0.3
+# version: 0.4
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: http://git.dev.abylina.com/momon/discourse-solved
 
@@ -386,11 +386,18 @@ SQL
       allow_accepted_answers_on_category?(topic.category_id) && is_staff?
     end
 
+    def user_group_names
+      @user_group_names ||= current_user.groups.pluck(:name)
+    end
+
     def can_queue_answer?(topic)
       allow_accepted_answers_on_category?(topic.category_id) && (
         is_staff? || (
-          authenticated? && ((!topic.closed? && topic.user_id == current_user.id) ||
-                            (current_user.trust_level >= 4))
+          authenticated? && (
+                              (!topic.closed? && topic.user_id == current_user.id) ||
+                              (current_user.trust_level >= 4) ||
+                              (user_group_names & SiteSetting.solved_groups_can_queue.to_s.split("|")).length > 0
+                            )
         )
       )      
     end
