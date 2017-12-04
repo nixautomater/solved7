@@ -1,6 +1,6 @@
 # name: discourse-solved
 # about: Custom discourse solved plugin based on https://github.com/discourse/discourse-solved
-# version: 0.4
+# version: 0.5
 # authors: Muhlis Budi Cahyono (muhlisbc@gmail.com)
 # url: http://git.dev.abylina.com/momon/discourse-solved
 
@@ -219,7 +219,7 @@ SQL
 
       guardian.ensure_can_accept_answer!(post.topic)
 
-      post.custom_fields["is_queued_answer"] = "rejected"
+      post.custom_fields["is_queued_answer"] = nil
       post.save!
 
       render json: success_json
@@ -383,7 +383,7 @@ SQL
       #   )
       # )
 
-      allow_accepted_answers_on_category?(topic.category_id) && is_staff?
+      allow_accepted_answers_on_category?(topic.category_id) && is_admin?
     end
 
     def user_group_names
@@ -392,7 +392,7 @@ SQL
 
     def can_queue_answer?(topic)
       allow_accepted_answers_on_category?(topic.category_id) && (
-        is_staff? || (
+        is_admin? || (
           authenticated? && (
                               (!topic.closed? && topic.user_id == current_user.id) ||
                               (current_user.trust_level >= 4) ||
