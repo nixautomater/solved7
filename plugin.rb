@@ -64,7 +64,7 @@ SQL
       guardian.ensure_can_process_answers!
       post_ids = PostCustomField.where(name: 'is_queued_answer', value: 'true').pluck(:post_id)
       posts = Post.where(id: post_ids).includes(:topic, :user).references(:topic)
-      render_json_dump(serialize_data(posts, PostSerializer, scope: guardian, add_title: true, root: false))
+      render_json_dump(serialize_data(posts, SolvedPostQueueSerializer, scope: guardian, add_title: true, root: false))
     end
 
     def accept
@@ -194,6 +194,7 @@ SQL
       guardian.ensure_can_queue_answer!(post.topic)
 
       post.custom_fields["is_queued_answer"] = "true"
+      post.custom_fields["queued_by"] = current_user.id
       post.save!
 
       render json: success_json
@@ -446,6 +447,33 @@ SQL
 
     def get_topic
       (topic_view && topic_view.topic) || object.topic
+    end
+  end
+
+  class SolvedPostQueueSerializer < ::PostSerializer
+    attributes :total_post_count, :queued_by, :solution_count, :queue_count
+
+    def total_post_count
+      object.topic ? object.topic.posts.count : 0
+    end
+
+    def queued_by
+      if user = User.where(id: object.custom_fields["queued_by"].to_i).first
+        {id: user.id, name: user.username}
+      end
+    end
+
+    def solution_count
+      if topic = object.topic
+        topic.custom_fields["accepted_answer_post_ids"].to_s.split(",").length
+      end
+    end
+
+    def queue_count
+      if topic = object.topic
+        ids = object.topic.posts.pluck(:id)
+        PostCustomField.where(post_id: ids, name: 'is_queued_answer', value: 'true').count
+      end
     end
   end
 
