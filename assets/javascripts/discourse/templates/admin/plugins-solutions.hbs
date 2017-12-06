@@ -14,7 +14,7 @@
                     <span>Topic: </span>
                     <a href="/t/{{post.topic_slug}}/{{post.topic_id}}/{{post.post_number}}" target="_blank" class="post-link">{{post.topic_title}}</a>
                   </div>
-                  {{category-link-by-id post.category_id}}
+                  {{category-link-by-id category_id=post.category_id}}
                   <div class="cooked">{{{post.cooked}}}</div>
                   <div style="margin: 15px 0">
                     <p style="font-weight: bolder">Marked by: {{#if post.queued_by}}<a href="/u/{{post.queued_by}}" target="_blank">{{post.queued_by}}</a>{{/if}}</p>
