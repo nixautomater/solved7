@@ -1,5 +1,9 @@
-.solved-panel, .post-controls .accepted, .fa.accepted, .accepted-text, button.accepted {
+.solved-panel, .post-controls .accepted, .fa.accepted, .accepted-text {
   color: green;
+}
+
+button.accepted {
+  color: green !important;
 }
 
 .post-controls .accepted-text {
