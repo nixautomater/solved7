@@ -454,7 +454,7 @@ SQL
     attributes :total_post_count, :queued_by, :solution_count, :queue_count
 
     def total_post_count
-      object.topic ? object.topic.reply_count : 0
+      object.topic ? (object.topic.posts_count - 1) : 0
     end
 
     def queued_by
