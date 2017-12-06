@@ -459,7 +459,7 @@ SQL
 
     def queued_by
       if user = User.where(id: object.custom_fields["queued_by"].to_i).first
-        {id: user.id, name: user.username}
+        user.username
       end
     end
 
